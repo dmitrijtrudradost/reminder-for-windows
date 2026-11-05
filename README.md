@@ -1,4 +1,4 @@
-# Напоминалка для Windows 11
+# Reminder for Windows — задачи и процессы
 
 Версия 2.3  Remider_for_win
 
