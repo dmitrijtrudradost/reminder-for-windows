@@ -35,7 +35,7 @@ reminders.db.bak-2.1
 
 ## 3. Скачать архив 2.2
 
-Возьмите `napominalka-2.2-win.zip` из [релиза 2.2 на GitHub](https://github.com/dmitrijtrudradost/vpv-04-gorodnichij-dmitrij_dz5_1_Remider_for_win/releases/tag/2.2).
+Возьмите `napominalka-2.2-win.zip` из [релиза 2.2 на GitHub](https://github.com/dmitrijtrudradost/reminder-for-windows/releases/tag/2.2).
 
 Распакуйте во **временную** папку, например `C:\napominalka-2.2-new`.
 
