@@ -34,7 +34,7 @@ from templates import (
 )
 import autostart
 
-APP_VERSION = "2.3"
+APP_VERSION = "2.3.1"
 
 FILTER_ALL = "Все"
 QUICK_MINUTES = (1, 5, 15, 30, 45, 60)
@@ -453,7 +453,7 @@ class ReminderApp:
     # ------------------------------------------------------------------ UI
 
     def setup_ui(self):
-        self.root.title(f"Напоминалка {APP_VERSION}")
+        self.root.title(f"Reminder for Windows {APP_VERSION}")
         self.root.geometry("800x680")
         self.root.minsize(800, 560)
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)

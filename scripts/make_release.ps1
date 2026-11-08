@@ -2,7 +2,7 @@
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $releaseDir = Join-Path $root "release"
-$zipPath = Join-Path $releaseDir "napominalka-2.3-win.zip"
+$zipPath = Join-Path $releaseDir "reminder-for-windows-2.3.1.zip"
 $stage = Join-Path $releaseDir "_stage"
 
 $files = @(
@@ -15,6 +15,8 @@ $files = @(
     "autostart.py",
     "requirements.txt",
     "README.md",
+    "ARCHITECTURE.md",
+    "CHANGELOG.md",
     "INSTALL.md",
     "UPDATE-2.2.md",
     "UPDATE-2.3.md"

@@ -1,49 +1,57 @@
-# Установка на Windows 10
+# Установка и запуск на Windows
 
-Приложение работает на Windows 10 (начиная с версии 1607) и Windows 11.
-Нужен Python 3.10 или новее с pip и tkinter.
+Для запуска нужны Windows 10 (начиная с версии 1607) или Windows 11 и Python 3.10 или новее с `pip` и `tkinter`.
 
-Если на компьютере уже стоит **версия 2.1**, не ставьте с нуля: следуйте
-[UPDATE-2.2.md](UPDATE-2.2.md), чтобы сохранить `reminders.db`.
+1. Установите [Python для Windows](https://www.python.org/downloads/windows/). В установщике включите **Add python.exe to PATH** и компонент **tcl/tk and IDLE**.
+2. Откройте PowerShell и проверьте Python и Tkinter:
 
-## 1. Python
+   ```powershell
+   python --version
+   python -m pip --version
+   python -c "import tkinter; print('tkinter ok')"
+   ```
 
-Скачайте установщик с [python.org](https://www.python.org/downloads/windows/).
-При установке включите:
+3. Выберите один из способов получения программы ниже. В командах замените пример пути на свою папку. Выполняйте команды из папки, где находится `main.py`.
 
-- **Add python.exe to PATH**
-- **tcl/tk and IDLE** (это tkinter; без него окно не откроется)
+### Вариант 1. Архив проекта
 
-Проверка в PowerShell:
+1. Скачайте [архив версии 2.3.1](https://github.com/dmitrijtrudradost/reminder-for-windows/releases/download/2.3.1/reminder-for-windows-2.3.1.zip) и распакуйте его, например, в `C:\Reminder_for_Windows`. Убедитесь, что в этой папке находятся `main.py`, `requirements.txt` и `process_builder_web/dist/index.html`.
+2. В PowerShell выполните:
 
-```powershell
-python --version
-python -c "import tkinter; print('tkinter ok')"
-```
+   ```powershell
+   cd C:\Reminder_for_Windows
+   python -m pip install -r requirements.txt
+   python main.py
+   ```
 
-## 2. Программа
+В архиве 2.3.1 есть собранная веб-часть, поэтому Node.js для этого способа не нужен.
 
-Распакуйте архив релиза в любую папку, например `C:\napominalka`.
-В этой папке выполните:
+### Вариант 2. Исходники GitHub
 
-```powershell
-cd C:\napominalka
-pip install -r requirements.txt
-python main.py
-```
+1. Скачайте исходники через **Code → Download ZIP** на странице репозитория и распакуйте их либо клонируйте репозиторий. Откройте PowerShell в распакованной папке, содержащей `main.py`.
+2. Установите [Node.js с npm](https://nodejs.org/) и убедитесь, что доступны `node --version` и `npm --version`.
+3. Из корня проекта соберите веб-часть конструктора:
 
-В `requirements.txt` есть `pywebview` — он нужен для окна «Конструктор процессов».
-Собранная веб-часть уже лежит в `process_builder_web/dist`, Node.js на компьютере
-пользователя не требуется. Для конструктора на Windows обычно достаточно
-встроенного WebView2 / Edge.
+   ```powershell
+   cd process_builder_web
+   npm ci
+   npm run build
+   cd ..
+   ```
 
-Первый запуск создаёт рядом с `main.py` файл `reminders.db`.
-Закрытие окна крестиком сворачивает программу в трей: напоминания продолжают
-приходить. Полный выход — пункт «Выход» в меню иконки в трее.
+   Убедитесь, что создан `process_builder_web/dist/index.html`. Без этой сборки конструктор процессов не откроется; повторите сборку после изменения веб-части.
+4. Из корня проекта установите зависимости Python и запустите программу:
 
-База предыдущих версий открывается без ручных действий: таблицы процессов,
-колонка границы уведомлений шага и пользовательские шаблоны добавляются
-автоматически.
+   ```powershell
+   python -m pip install -r requirements.txt
+   python main.py
+   ```
+
+После запуска откроется окно приложения, а в рабочей папке появится база `reminders.db`. Закрытие окна крестиком сворачивает приложение в трей; для полного выхода выберите **Выход** в меню значка. Если конструктор не открывается, проверьте наличие [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/).
+
+Согласно прежней инструкции проекта, базы версий 1.1–2.1 открываются с автоматическим добавлением необходимых таблиц и полей. При обновлении существующей установки сохраните базу и следуйте инструкции для своей версии: [2.1 → 2.2](UPDATE-2.2.md) или [2.2 → 2.3](UPDATE-2.3.md).
+
+При запуске из другой рабочей папки `reminders.db` создаётся в ней. Для сохранения существующих напоминаний при обновлении сначала сделайте копию базы и следуйте инструкциям обновления, приведённым выше.
 
 ## 3. Автозапуск при входе в Windows
 
@@ -54,7 +62,7 @@ python main.py
 | --- | --- | --- | --- |
 | Папка «Автозагрузка» | Ярлык в `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup` | Обычный пользователь, без прав администратора | Ярлык можно случайно удалить |
 | Планировщик заданий | Задача «при входе в систему», программа `pythonw.exe`, аргумент путь к `main.py` | Нужна задержка старта или запуск скрыто | Много шагов, легко ошибиться в путях |
-| Реестр `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` | Строка с `"C:\...\pythonw.exe" "C:\napominalka\main.py"` | Один пользователь, ручная настройка | Правка реестра, ошибка в кавычках ломает вход |
+| Реестр `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` | Строка с `"C:\...\pythonw.exe" "C:\Reminder_for_Windows\main.py"` | Один пользователь, ручная настройка | Правка реестра, ошибка в кавычках ломает вход |
 
 Ярлык должен вызывать **pythonw.exe**, а не python.exe: иначе при входе
 на секунду появится чёрное окно консоли. К `main.py` добавляется флаг `--tray`:
@@ -91,14 +99,14 @@ powershell -ExecutionPolicy Bypass -File scripts\autostart.ps1 -Uninstall
 1. `Win+R` → `taskschd.msc`
 2. Создать задачу, триггер «При входе в систему»
 3. Действие: программа = полный путь к `pythonw.exe`, аргументы =
-   `"C:\napominalka\main.py" --tray`, рабочая папка = папка проекта
+   `"C:\Reminder_for_Windows\main.py" --tray`, рабочая папка = папка проекта
 
 Для реестра откройте `regedit`, ветка
 `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run`,
 строковый параметр, значение:
 
 ```text
-"C:\Path\to\pythonw.exe" "C:\napominalka\main.py" --tray
+"C:\Path\to\pythonw.exe" "C:\Reminder_for_Windows\main.py" --tray
 ```
 
 Рабочий каталог реестр не задаёт, поэтому надёжнее ярлык в Автозагрузке
